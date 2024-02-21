@@ -1,0 +1,13 @@
+@startuml
+
+entity "Посты" as posts
+entity "Пользователи" as users
+entity "Комментарии" as comments
+entity "Статистика" as stats
+
+users ||--o{ posts : Посты
+users }o--|| posts : Лайки
+users ||--o{ comments : Авторство \nкоммента
+posts ||--|{ comments : Принадлежность
+posts ||--o{ stats : Кол-во \nлайков и\nпросмотров
+@enduml

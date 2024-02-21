@@ -1,0 +1,14 @@
+@startuml Context_diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Диаграмма контекста
+
+Person(user, "Пользователь", "Рядовой пользователь")
+Person(moder, "Модератор", "Привилегированный пользователь")
+
+System(gateway, "Главный API", "Главный сервис, который отвечает за клиентское API и за регистрацию и аутентификацию пользователей")
+
+Rel(user, gateway, "Делает свои посты, лайкает и комментит другие")
+Rel(moder, gateway, "Пользователь с привилегией удалять посты и комменты других")
+
+@enduml
