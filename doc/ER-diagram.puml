@@ -1,9 +1,36 @@
 @startuml
 
-entity "Посты" as posts
-entity "Пользователи" as users
-entity "Комментарии" as comments
-entity "Статистика" as stats
+entity "Посты" as posts {
+    id: Int
+    --
+    data: String
+    publication_date: DateTime
+    author_id: Int
+}
+
+entity "Пользователи" as users {
+    id: Int
+    --
+    username: String
+    password_hash: Binary
+}
+
+entity "Комментарии" as comments {
+    id: Int
+    --
+    data: String
+    publication_date: DateTime
+    author_id: Int
+    post_id: Int
+}
+
+entity "Статистика" as stats {
+    id: Int
+    --
+    post_id: Int
+    views: Int
+    likes: Int
+}
 
 users ||--o{ posts : Посты
 users }o--|| posts : Лайки

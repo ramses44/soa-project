@@ -12,21 +12,21 @@
 title Диаграмма контейнеров
 
 Person(user, "Пользователь", "Рядовой пользователь")
-Person(moder, "Модератор", "Привилегированный пользователь")
 
 Container(gateway, "Главный API", "Python", "Главный сервис, который отвечает за клиентское API и за регистрацию и аутентификацию пользователей", "python")
+ContainerDb(user_db, "БД \nпользователей", "MySQL", "База с аккаунтами пользователей", "mysql_wordmark")
 
-Container(posts, "Сервис постов", "Python", "Сервис аккаунтов пользователей, их постов и комментариев", "python")
+Container(posts, "Сервис постов", "Python", "Сервис постов и комментариев", "python")
 Container(stats, "Сервис статистики", "Go", "Сервис статистики, отвечающий за подсчет лайков и просмотров", "go")
 
 ContainerQueue(broker, "Брокер событий", "kafka", "", "kafka")
 
 ContainerDb(post_db, "БД", "MySQL", "", "mysql_wordmark")
-ContainerDb(stat_db, "БД", "Clickhouse", "", "database")
 
 Rel(user, gateway, "Посты, лайки, комменты", "REST API")
-Rel(moder, gateway, "Модерация пользователей", "REST API")
 
+Rel(gateway, user_db, "Регистрация, аутентификация")
+Rel(gateway, stats, "Запрос статистики", "gRPC")
 Rel(gateway, broker, "События", "gRPC")
 Rel(broker, stats, "Аутентификация, действия с постами и комментами", "gRPC")
 Rel(gateway, posts, "Информация о лайках, просмотрах", "gRPC")
