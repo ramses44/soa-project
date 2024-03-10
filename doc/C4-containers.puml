@@ -20,6 +20,7 @@ Container(posts, "Сервис постов", "Python", "Сервис посто
 Container(stats, "Сервис статистики", "Go", "Сервис статистики, отвечающий за подсчет лайков и просмотров", "go")
 
 ContainerQueue(broker, "Брокер событий", "kafka", "", "kafka")
+ContainerDb(stat_db, "БД", "MySQL", "", "mysql_wordmark")
 
 ContainerDb(post_db, "БД", "MySQL", "", "mysql_wordmark")
 
