@@ -1,0 +1,38 @@
+@startuml Container_diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v2.4.0
+
+!include <cloudinsight/kafka>
+!includeurl ICONURL/common.puml
+!includeurl ICONURL/devicons/python.puml
+!includeurl ICONURL/devicons/go.puml
+!includeurl ICONURL/devicons2/mysql_wordmark.puml
+!includeurl ICONURL/devicons/database.puml
+
+title Диаграмма контейнеров
+
+Person(user, "Пользователь", "Рядовой пользователь")
+
+Container(gateway, "Главный API", "Python", "Главный сервис, который отвечает за клиентское API и за регистрацию и аутентификацию пользователей", "python")
+ContainerDb(user_db, "БД \nпользователей", "MySQL", "База с аккаунтами пользователей", "mysql_wordmark")
+
+Container(posts, "Сервис постов", "Python", "Сервис постов и комментариев", "python")
+Container(stats, "Сервис статистики", "Go", "Сервис статистики, отвечающий за подсчет лайков и просмотров", "go")
+
+ContainerQueue(broker, "Брокер событий", "kafka", "", "kafka")
+ContainerDb(stat_db, "БД", "MySQL", "", "mysql_wordmark")
+
+ContainerDb(post_db, "БД", "MySQL", "", "mysql_wordmark")
+
+Rel(user, gateway, "Посты, лайки, комменты", "REST API")
+
+Rel(gateway, user_db, "Регистрация, аутентификация")
+Rel(gateway, stats, "Запрос статистики", "gRPC")
+Rel(gateway, broker, "События", "gRPC")
+Rel(broker, stats, "Аутентификация, действия с постами и комментами", "gRPC")
+Rel(gateway, posts, "Информация о лайках, просмотрах", "gRPC")
+
+Rel(posts, post_db, "Данные")
+Rel(stats, stat_db, "Статистика")
+
+@enduml

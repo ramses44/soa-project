@@ -1,0 +1,40 @@
+@startuml
+
+entity "Посты" as posts {
+    id: Int
+    --
+    data: String
+    publication_date: DateTime
+    author_id: Int
+}
+
+entity "Пользователи" as users {
+    id: Int
+    --
+    username: String
+    password_hash: Binary
+}
+
+entity "Комментарии" as comments {
+    id: Int
+    --
+    data: String
+    publication_date: DateTime
+    author_id: Int
+    post_id: Int
+}
+
+entity "Статистика" as stats {
+    id: Int
+    --
+    post_id: Int
+    views: Int
+    likes: Int
+}
+
+users ||--o{ posts : Посты
+users }o--|| posts : Лайки
+users ||--o{ comments : Авторство \nкоммента
+posts ||--|{ comments : Принадлежность
+posts ||--o{ stats : Кол-во \nлайков и\nпросмотров
+@enduml
