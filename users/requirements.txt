@@ -1,0 +1,10 @@
+aiomysql==0.2.0
+alembic==1.13.1
+APIFlask==2.1.1
+Flask==3.0.0
+Flask-Session==0.6.0
+Flask-SQLAlchemy==3.1.1
+flask-swagger-ui==4.11.1
+SQLAlchemy==2.0.25
+mysqlclient==2.1.1
+PyYAML==5.3.1
