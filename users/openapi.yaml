@@ -1,0 +1,142 @@
+info:
+  title: Users
+  version: 0.1.0
+tags: []
+servers:
+- url: http://localhost:8080/
+paths:
+  /signup:
+    post:
+      parameters: []
+      responses:
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+        '200':
+          content: {}
+          description: User registered successfully
+        '409':
+          content: {}
+          description: User is already registered
+      summary: User registration in the system
+      description: Username and password should be provided in the request JSON
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthData'
+  /signin:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+          headers:
+            'Set-Cookie: ...':
+              in: header
+              name: 'Set-Cookie: ...'
+              description: Set authentification session
+              schema:
+                type: string
+              required: false
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      summary: User authorithation in the system
+      description: Username and password should be provided in the request JSON. Auth-Session
+        is created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthData'
+  /who-am-i:
+    get:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+      summary: Who Am I
+  /update-profile:
+    post:
+      parameters: []
+      responses:
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+        '200':
+          content: {}
+          description: User registered successfully
+        '401':
+          content: {}
+          description: Invalid session
+      summary: Change User profile data
+      description: JSON including some of the following fields (first_name, second_name,
+        birth_date, email, phone) should be provided
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileData'
+openapi: 3.0.3
+components:
+  schemas:
+    ValidationError:
+      properties:
+        detail:
+          type: object
+          properties:
+            <location>:
+              type: object
+              properties:
+                <field_name>:
+                  type: array
+                  items:
+                    type: string
+        message:
+          type: string
+      type: object
+    UserAuthData:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 32
+        password:
+          type: string
+          minLength: 8
+      required:
+      - password
+      - username
+    UserProfileData:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 64
+        second_name:
+          type: string
+          maxLength: 64
+        birth_date:
+          type: string
+          pattern: ^\s(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s$
+        email:
+          type: string
+        phone:
+          type: string
+          pattern: (\+)[1-9]{1,3} [0-9]{10}
